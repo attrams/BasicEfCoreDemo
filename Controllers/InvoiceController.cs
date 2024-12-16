@@ -19,9 +19,9 @@ public class InvoiceController : ControllerBase
 
     // GET: api/Invoice
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Invoice>>> GetInvoices()
+    public async Task<ActionResult<IEnumerable<Invoice>>> GetInvoices(InvoiceStatus? status)
     {
-        return await _context.Invoices.ToListAsync();
+        return await _context.Invoices.Where(invoice => invoice.Status == status || status == null).ToListAsync();
     }
 
     // GET: api/Invoice/5

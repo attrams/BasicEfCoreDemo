@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using BasicEfCoreDemo.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,7 +9,12 @@ builder.Services.AddDbContext<InvoiceDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
-builder.Services.AddControllers();
+// Display enums as strings in swagger.
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
