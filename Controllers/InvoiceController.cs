@@ -19,9 +19,14 @@ public class InvoiceController : ControllerBase
 
     // GET: api/Invoice
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Invoice>>> GetInvoices(InvoiceStatus? status)
+    public async Task<ActionResult<IEnumerable<Invoice>>> GetInvoices(int page = 1, int pageSize = 10, InvoiceStatus? status = null)
     {
-        return await _context.Invoices.Where(invoice => invoice.Status == status || status == null).ToListAsync();
+        return await _context.Invoices
+                        .Where(invoice => invoice.Status == status || status == null)
+                        .OrderByDescending(invoice => invoice.Status)
+                        .Skip((page - 1) * pageSize)
+                        .Take(pageSize)
+                        .ToListAsync();
     }
 
     // GET: api/Invoice/5
