@@ -22,18 +22,21 @@ public class InvoiceController : ControllerBase
     public async Task<ActionResult<IEnumerable<Invoice>>> GetInvoices(int page = 1, int pageSize = 10, InvoiceStatus? status = null)
     {
         return await _context.Invoices
-                        .Where(invoice => invoice.Status == status || status == null)
-                        .OrderByDescending(invoice => invoice.Status)
-                        .Skip((page - 1) * pageSize)
-                        .Take(pageSize)
-                        .ToListAsync();
+            .Include(invoice => invoice.InvoiceItems)
+            .Where(invoice => invoice.Status == status || status == null)
+            .OrderByDescending(invoice => invoice.Status)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
     }
 
     // GET: api/Invoice/5
     [HttpGet("{id}")]
     public async Task<ActionResult<Invoice>> GetInvoice(Guid id)
     {
-        var invoice = await _context.Invoices.FindAsync(id);
+        var invoice = await _context.Invoices
+            .Include(invoice => invoice.InvoiceItems)
+            .SingleOrDefaultAsync(invoice => invoice.Id == id);
 
         if (invoice == null)
         {

@@ -3,10 +3,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BasicEfCoreDemo.Data;
 
-public class InvoiceDbContext(DbContextOptions<InvoiceDbContext> options) : DbContext(options)
+public class InvoiceDbContext(DbContextOptions<InvoiceDbContext> options, IConfiguration configuration) : DbContext(options)
 {
     public DbSet<Invoice> Invoices => Set<Invoice>();
     public DbSet<InvoiceItem> InvoiceItems => Set<InvoiceItem>();
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        base.OnConfiguring(optionsBuilder);
+        optionsBuilder.UseSqlite(
+            configuration.GetConnectionString("DefaultConnection"),
+            sqliteOptionsAction => sqliteOptionsAction.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)
+        );
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
