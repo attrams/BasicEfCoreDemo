@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BasicEfCoreDemo.Migrations
 {
     [DbContext(typeof(InvoiceDbContext))]
-    [Migration("20241223012750_AddInvoiceItem")]
+    [Migration("20241223014014_AddInvoiceItem")]
     partial class AddInvoiceItem
     {
         /// <inheritdoc />
