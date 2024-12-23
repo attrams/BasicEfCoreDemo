@@ -6,6 +6,7 @@ namespace BasicEfCoreDemo.Data;
 public class InvoiceDbContext(DbContextOptions<InvoiceDbContext> options) : DbContext(options)
 {
     public DbSet<Invoice> Invoices => Set<Invoice>();
+    public DbSet<InvoiceItem> InvoiceItems => Set<InvoiceItem>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
