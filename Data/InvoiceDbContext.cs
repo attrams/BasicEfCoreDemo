@@ -5,8 +5,13 @@ namespace BasicEfCoreDemo.Data;
 
 public class InvoiceDbContext(DbContextOptions<InvoiceDbContext> options, IConfiguration configuration) : DbContext(options)
 {
+    // One-to-Many 
     public DbSet<Invoice> Invoices => Set<Invoice>();
     public DbSet<InvoiceItem> InvoiceItems => Set<InvoiceItem>();
+
+    // One-to-One
+    public DbSet<Contact> Contacts => Set<Contact>();
+    public DbSet<Address> Addresses => Set<Address>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
